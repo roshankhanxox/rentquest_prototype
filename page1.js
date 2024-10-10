@@ -1,72 +1,145 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const studentBtn = document.getElementById('studentBtn');
-    const landlordBtn = document.getElementById('landlordBtn');
-    const loginForm = document.getElementById('loginForm');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const container = document.querySelector('.container');
-    let userType = 'student';
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('header');
+    const searchInput = document.querySelector('input[type="text"]');
+    const suggestionsContainer = document.getElementById('suggestions');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const serviceItems = document.querySelectorAll('.service-item');
 
-    function setActiveButton(button) {
-        studentBtn.classList.remove('active');
-        landlordBtn.classList.remove('active');
-        button.classList.add('active');
+    // Header background change on scroll
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            header.style.backgroundColor = 'rgba(30, 58, 138, 0.9)';
+        } else {
+            header.style.backgroundColor = 'rgba(26, 0, 51, 0.7)';
+        }
+    });
+
+    // Search input animations
+    searchInput.addEventListener('focus', function() {
+        this.classList.add('pulse');
+    });
+    searchInput.addEventListener('blur', function() {
+        this.classList.remove('pulse');
+    });
+
+    // Locations data
+    const locations = {
+        'H': ['Hussainpur', 'Howrah', 'Hazra', 'Hindustan Park', 'Hatiara', 'Hatibagan'],
+        'R': ['Ruby', 'Rajarhat', 'Ranikuthi', 'Rabindra Sadan', 'Rashbehari', 'Ripon Street'],
+        'B': ['Baguiati', 'Ballygunge', 'Behala', 'Bansdroni', 'Baranagar', 'Barrackpore'],
+        'M': ['Maheshtala', 'Maniktala', 'Minto Park', 'Metiabruz', 'Madhyamgram'],
+        'S': ['Salt Lake', 'Shyambazar', 'Sonarpur', 'Sealdah', 'Santoshpur']
+    };
+
+    // Function to show suggestions
+    function showSuggestions(value) {
+        suggestionsContainer.innerHTML = '';
+        if (value === '') {
+            suggestionsContainer.style.display = 'none';
+            return;
+        }
+
+        const firstLetter = value.charAt(0).toUpperCase();
+        
+        const matchingLocations = locations[firstLetter] || [];
+        const filtered = matchingLocations.filter(place => 
+            place.toLowerCase().startsWith(value.toLowerCase())
+        );
+
+        if (filtered.length > 0) {
+            filtered.forEach(place => {
+                const div = document.createElement('div');
+                div.textContent = place;
+                div.addEventListener('click', () => {
+                    searchInput.value = place;
+                    suggestionsContainer.style.display = 'none';
+                });
+                suggestionsContainer.appendChild(div);
+            });
+            suggestionsContainer.style.display = 'block';
+        } else {
+            suggestionsContainer.style.display = 'none';
+        }
     }
 
-    function animateEntrance() {
-        container.style.opacity = '0';
-        container.style.transform = 'scale(0.9)';
-        setTimeout(() => {
-            container.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
-            container.style.opacity = '1';
-            container.style.transform = 'scale(1)';
-        }, 50);
-    }
-
-    studentBtn.addEventListener('click', () => {
-        setActiveButton(studentBtn);
-        userType = 'student';
+    // Event listener for input changes
+    searchInput.addEventListener('input', function() {
+        showSuggestions(this.value);
     });
 
-    landlordBtn.addEventListener('click', () => {
-        setActiveButton(landlordBtn);
-        userType = 'landlord';
+    // Close suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (e.target !== searchInput && e.target !== suggestionsContainer) {
+            suggestionsContainer.style.display = 'none';
+        }
     });
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        console.log('Logging in as', userType, 'with email:', email);
-        // Here you would typically send the login data to a server
-        // For this example, we'll just log the data and show an alert
-        alert(`Login attempt as ${userType} with email: ${email}`);
+    // Prevent form submission on Enter key
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
     });
 
-    // Implement the hover effect for the submit button
-    const submitBtn = document.querySelector('.submit-btn');
-    submitBtn.addEventListener('mouseenter', () => {
-        submitBtn.style.transform = 'translateY(-2px)';
-        submitBtn.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
-    });
-    submitBtn.addEventListener('mouseleave', () => {
-        submitBtn.style.transform = 'translateY(0)';
-        submitBtn.style.boxShadow = 'none';
-    });
-
-    // Implement the stars animation
-    const stars = document.querySelector('.stars');
+    // Animated background
+    const starsElement = document.querySelector('.stars');
+    let starsPosition = 0;
     function animateStars() {
-        stars.style.transform = 'translateY(-100%)';
-        stars.style.transition = 'transform 10s linear';
-        setTimeout(() => {
-            stars.style.transform = 'translateY(0)';
-            stars.style.transition = 'none';
-            requestAnimationFrame(animateStars);
-        }, 10000);
+        starsPosition -= 0.1;
+        if (starsPosition <= -100) {
+            starsPosition = 0;
+        }
+        starsElement.style.backgroundPosition = `0 ${starsPosition}%`;
+        requestAnimationFrame(animateStars);
     }
-    requestAnimationFrame(animateStars);
+    animateStars();
 
-    // Call the entrance animation when the page loads
-    animateEntrance();
+    // Intersection Observer for gallery items
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    galleryItems.forEach(item => {
+        observer.observe(item);
+    });
+
+    // Smooth scrolling for navigation links
+    const navLinks = document.querySelectorAll('nav a');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            targetSection.scrollIntoView({
+                behavior: 'smooth'
+            });
+
+            // Add a class to trigger the transition
+            targetSection.classList.add('active');
+
+            // Remove the class after the transition
+            setTimeout(() => {
+                targetSection.classList.remove('active');
+            }, 1000);
+        });
+    });
+
+    // Intersection Observer for service items
+    const serviceObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    serviceItems.forEach(item => {
+        serviceObserver.observe(item);
+    });
 });
