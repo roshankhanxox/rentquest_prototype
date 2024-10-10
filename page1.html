@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentQuest Login</title>
+    <link rel="stylesheet" href="page1.css">
+</head>
+<body>
+    <div class="background">
+        <div class="stars"></div>
+    </div>
+    <div class="container">
+      
+        <div class="login-card">
+            <div class="card-header">
+                <h2>Login/SignUp</h2>
+                <div class="user-type-buttons">
+                    <button id="studentBtn" class="user-type-btn active">Student</button>
+                    <button id="landlordBtn" class="user-type-btn">Landlord</button>
+                </div>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+            <div class="signup-link">
+                <p>Don't have an account? <a href="#">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="page1.js"></script>
+</body>
