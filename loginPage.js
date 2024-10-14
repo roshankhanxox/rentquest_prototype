@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.scrollY > 50) {
             header.style.backgroundColor = 'rgba(30, 58, 138, 0.9)';
         } else {
-            header.style.backgroundColor = 'rgba(26, 0, 51, 0.7)';
+            header.style.backgroundColor = 'rgba(10, 25, 47, 0.7)';
         }
     });
 
