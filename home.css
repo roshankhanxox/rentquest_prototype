@@ -7,7 +7,45 @@
     --text-color: #ffffff;
     --text-secondary: #a8b2d1;
 }
+#searchBtn {
+    padding: 1rem 2rem;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
+#searchBtn:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+}
+
+/* Adjust the input to accommodate the button */
+#searchBar {
+    padding-right: 120px; /* Make room for the button */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    #searchBtn {
+        position: static;
+        transform: none;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    #searchBar {
+        padding-right: 1.5rem;
+    }
+}
 * {
     margin: 0;
     padding: 0;
@@ -453,4 +491,24 @@ h3 {
         width: 100%;
         max-width: 300px;
     }
+}
+/* Add this to the end of your existing CSS file */
+
+#typewriter {
+    overflow: hidden;
+    border-right: 0.15em solid var(--primary-color);
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: 0.15em;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--primary-color) }
 }

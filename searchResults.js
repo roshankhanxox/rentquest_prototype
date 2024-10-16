@@ -27,11 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
             propertyDiv.innerHTML = `
+                <a href="propertydetails.html?id=${property.id}" class="property-link">
                 <h3>${property.name}</h3>
                 <img src="${imageUrl}" alt="${property.name} image" /> <!-- Render image -->
                 <p>Location: ${property.location}</p>
                 <p>Price: ${property.price}</p>
                 <p>Size: ${property.size} sqft</p>
+            </a>
             `;
     
             propertiesContainer.appendChild(propertyDiv);
@@ -75,4 +77,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+    const params = new URLSearchParams(window.location.search);
+    const queryFromURL = params.get('query');
+    if (queryFromURL) {
+        searchInput.value = queryFromURL;  // Set the search input
+        performSearch(queryFromURL);  // Perform search with the query
+    }
+
 });
