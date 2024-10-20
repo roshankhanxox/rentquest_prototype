@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const signupData = Object.fromEntries(formData.entries());
 
         // Send data to Django backend using Fetch API
-        fetch('http://127.0.0.1:8000/api/users/', {  // Adjust to actual endpoint
+        fetch('https://rentquest-production.up.railway.app/api/users/', {  // Adjust to actual endpoint
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

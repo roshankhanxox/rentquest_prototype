@@ -512,3 +512,34 @@ h3 {
     from, to { border-color: transparent }
     50% { border-color: var(--primary-color) }
 }
+.create-property-btn {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+    margin-left: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+}
+
+.create-property-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.5);
+}
+
+@media (max-width: 768px) {
+    .create-property-btn {
+        margin: 1rem 0 0 0;
+        width: 100%;
+    }
+}

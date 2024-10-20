@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="propertyDetails.css">
     <title>Property Details - RentQuest</title>
+    <style>
+        /* Hide success and failure buttons initially */
+        #payment-response {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .response-btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .response-btn.failure {
+            background-color: #dc3545;
+        }
+    </style>
 </head>
 <body>
     <div class="background">
@@ -37,9 +60,14 @@
                 <p id="property-size"></p>
                 <button class="contact-btn" id="contact-btn">Contact Landlord</button>
             </section>
-            <section id="map-section">
+            <!-- Payment response section -->
+            <div id="payment-response">
+                <button class="response-btn success" id="success-btn">Payment Success</button>
+                <button class="response-btn failure" id="failure-btn">Payment Failed</button>
+            </div>
+            <section id="nearby-places-section">
                 <h2>Nearby Places</h2>
-                <div id="map">Google Maps will load here</div>
+                <div id="places-container"></div>
             </section>
             <section id="reviews-section">
                 <h2>Reviews</h2>
@@ -53,6 +81,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.querySelector('header');
             const navLinks = document.querySelectorAll('nav a');
+            const contactBtn = document.getElementById('contact-btn');
+            const paymentResponseDiv = document.getElementById('payment-response');
+            const successBtn = document.getElementById('success-btn');
+            const failureBtn = document.getElementById('failure-btn');
 
             // Header background change on scroll
             window.addEventListener('scroll', function() {
@@ -90,6 +122,23 @@
                 });
             });
 
+            contactBtn.addEventListener('click', function() {
+                window.open('https://rzp.io/rzp/H7zMIyR6', '_blank');
+
+                // Show the success and failure buttons
+                paymentResponseDiv.style.display = 'block';
+            });
+
+            // Success button click - show dummy number
+            successBtn.addEventListener('click', function() {
+                alert("Landlord's contact: 9999999999");  // Dummy contact number
+            });
+
+            // Failure button click - show payment failed message
+            failureBtn.addEventListener('click', function() {
+                alert('Payment failed. Please try again.');
+            });
+
             // Animated background
             const starsElement = document.querySelector('.stars');
             let starsPosition = 0;
@@ -106,3 +155,6 @@
     </script>
 </body>
 </html>
+
+
+
