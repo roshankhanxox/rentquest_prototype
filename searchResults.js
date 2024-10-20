@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     autocomplete.addListener('place_changed', function() {
         const place = autocomplete.getPlace();
+        if (place) {
+        // Trigger search after place is selected
+        const query = searchInput.value.trim();
+        if (query) {
+            performSearch(query);  // Perform search with the selected place
+        }
+    }
         console.log('Selected place:', place); // You can use the selected place data here
     });
     // Token Refresh Function
