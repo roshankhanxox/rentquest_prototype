@@ -6,6 +6,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     const galleryItems = document.querySelectorAll('.gallery-item');
     const serviceItems = document.querySelectorAll('.service-item');
     const typewriterElement = document.getElementById('typewriter');
+
+    const autocomplete = new google.maps.places.Autocomplete(searchInput, {
+        types: ['geocode'], // Restrict to cities. Modify this for other types like 'geocode' for addresses.
+        componentRestrictions: { country: 'in' } // Restrict to a specific country (India in this case)
+    });
+
+    // Optionally handle when a place is selected
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        console.log('Selected place:', place); // You can use the place data for further actions
+    });
     
     // Token Refresh Function
     async function refreshToken() {
