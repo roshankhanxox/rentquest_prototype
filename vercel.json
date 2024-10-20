@@ -1,9 +1,13 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/loginPage.html",
-    "destination": "/searchresults.html"
+    { 
+      "source": "/", 
+      "destination": "/loginPage.html"
+    },
+    { 
+      "source": "/searchresults", 
+      "destination": "/searchresults.html"
     }
-    
   ]
 }
 
