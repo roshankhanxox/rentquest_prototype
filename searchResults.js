@@ -10,6 +10,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     const minSizeInput = document.getElementById('minSize');
     const maxSizeInput = document.getElementById('maxSize');
 
+    const autocomplete = new google.maps.places.Autocomplete(searchInput, {
+        types: ['(cities)'], // This restricts the autocomplete to cities only, change as needed
+        componentRestrictions: { country: 'in' } // Restrict to India, adjust for other countries
+    });
+
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        console.log('Selected place:', place); // You can use the selected place data here
+    });
     // Token Refresh Function
     async function refreshToken() {
         const refreshToken = localStorage.getItem('refresh_token');
