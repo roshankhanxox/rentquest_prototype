@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const query = searchInput.value.trim();
         if (query) {
             // Redirect to searchresults.html with the query as a URL parameter
-            window.location.href = `searchresults.html?query=${encodeURIComponent(query)}`;
+            window.location.href = `searchResults.html?query=${encodeURIComponent(query)}`;
         }
     });
 
