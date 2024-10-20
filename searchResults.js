@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const maxSizeInput = document.getElementById('maxSize');
 
     const autocomplete = new google.maps.places.Autocomplete(searchInput, {
-        types: ['(cities)'], // This restricts the autocomplete to cities only, change as needed
+        types: ['geocode'], // This restricts the autocomplete to cities only, change as needed
         componentRestrictions: { country: 'in' } // Restrict to India, adjust for other countries
     });
 
