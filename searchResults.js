@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             propertyDiv.innerHTML = `
-                <a href="propertydetails.html?id=${property.id}" class="property-link">
+                <a href="propertyDetails.html?id=${property.id}" class="property-link">
                     <h3>${property.name}</h3>
                     <img src="${imageUrl}" alt="${property.name} image" /> <!-- Render image -->
                     <p>Location: ${property.location}</p>
