@@ -219,5 +219,26 @@ document.addEventListener('DOMContentLoaded', async function() {
     serviceItems.forEach(item => {
         serviceObserver.observe(item);
     });
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = this.elements['name'].value;
+            const email = this.elements['email'].value;
+            const message = this.elements['message'].value;
+
+            // Here you would typically send this data to a server
+            // For this example, we'll just log it to the console
+            console.log('Form submitted:', { name, email, message });
+
+            // Clear the form
+            this.reset();
+
+            // Show a success message (you can style this further)
+            alert('Thank you for your message. We will get back to you soon!');
+        });
+    }
 });
 
