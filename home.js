@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Call adjustTypewriterWidth initially and on window resize
     adjustTypewriterWidth();
     window.addEventListener('resize', adjustTypewriterWidth);
-});
 
     const role = localStorage.getItem('role');
     if (role === 'landlord') {
