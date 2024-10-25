@@ -493,24 +493,35 @@ h3 {
     }
 }
 /* Add this to the end of your existing CSS file */
-
 #typewriter {
     font-size: clamp(1.5rem, 4vw, 3rem);
-    overflow: visible; /* Changed from hidden to visible */
-    border-right: 0.15em solid var(--primary-color);
-    white-space: normal; /* Changed from nowrap to normal */
+    overflow: visible;
+    white-space: normal;
     margin: 0 auto;
     letter-spacing: 0.05em;
     max-width: 90vw;
+    text-align: center;
+    min-height: 3em;
+    padding-right: 0.15em;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem; /* Added space below the typewriter text */
+}
+
+#typewriter::after {
+    content: '';
+    position: absolute;
+    right: -0.1em;
+    top: 0;
+    height: 100%;
+    width: 0.1em;
+    background-color: var(--primary-color);
     animation: blink-caret 0.75s step-end infinite;
-    text-align: center; /* Added to ensure text is centered */
-    min-height: 3em; /* Added to prevent layout shifts */
-    padding-right: 0.15em; /* Added to account for the border-right */
 }
 
 @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: var(--primary-color) }
+    from, to { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 @media (max-width: 768px) {
