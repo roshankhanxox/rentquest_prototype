@@ -69,15 +69,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Start the typewriter effect
     typeWriter();
 
-    // Adjust typewriter width based on content
-    function adjustTypewriterWidth() {
-        typewriterElement.style.width = 'auto';
-        typewriterElement.style.width = typewriterElement.scrollWidth + 'px';
-    }
-
-    // Call adjustTypewriterWidth initially and on window resize
-    adjustTypewriterWidth();
-    window.addEventListener('resize', adjustTypewriterWidth);
     const role = localStorage.getItem('role');
     if (role === 'landlord') {
         const navbar = document.querySelector('nav');
