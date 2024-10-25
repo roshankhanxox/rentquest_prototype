@@ -54,14 +54,28 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Typewriter effect
     const text = "FIND YOUR PERFECT ACCOMMODATION";
     let i = 0;
+    
     function typeWriter() {
         if (i < text.length) {
-            typewriterElement.innerHTML += text.charAt(i);
+            typewriterElement.textContent += text.charAt(i);
             i++;
             setTimeout(typeWriter, 100);
         }
     }
+
+    // Start the typewriter effect
     typeWriter();
+
+    // Adjust typewriter width based on content
+    function adjustTypewriterWidth() {
+        typewriterElement.style.width = 'auto';
+        typewriterElement.style.width = typewriterElement.scrollWidth + 'px';
+    }
+
+    // Call adjustTypewriterWidth initially and on window resize
+    adjustTypewriterWidth();
+    window.addEventListener('resize', adjustTypewriterWidth);
+});
 
     const role = localStorage.getItem('role');
     if (role === 'landlord') {
