@@ -57,12 +57,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     function typeWriter() {
         if (i < text.length) {
-            typewriterElement.textContent += text.charAt(i);
+            typewriterElement.innerHTML += text.charAt(i);
             i++;
             setTimeout(typeWriter, 100);
         }
     }
 
+    // Clear the typewriter element before starting
+    typewriterElement.innerHTML = '';
+    
     // Start the typewriter effect
     typeWriter();
 
@@ -75,7 +78,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Call adjustTypewriterWidth initially and on window resize
     adjustTypewriterWidth();
     window.addEventListener('resize', adjustTypewriterWidth);
-
     const role = localStorage.getItem('role');
     if (role === 'landlord') {
         const navbar = document.querySelector('nav');
