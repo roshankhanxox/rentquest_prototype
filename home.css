@@ -496,13 +496,16 @@ h3 {
 
 #typewriter {
     font-size: clamp(1.5rem, 4vw, 3rem);
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to visible */
     border-right: 0.15em solid var(--primary-color);
-    white-space: nowrap;
+    white-space: normal; /* Changed from nowrap to normal */
     margin: 0 auto;
     letter-spacing: 0.05em;
     max-width: 90vw;
     animation: blink-caret 0.75s step-end infinite;
+    text-align: center; /* Added to ensure text is centered */
+    min-height: 3em; /* Added to prevent layout shifts */
+    padding-right: 0.15em; /* Added to account for the border-right */
 }
 
 @keyframes blink-caret {
