@@ -505,7 +505,6 @@ h3 {
     padding-right: 0.15em;
     position: relative;
     display: inline-block;
-    margin-bottom: clamp(1rem, 1.5vw, 1.5rem);; /* Added space below the typewriter text */
 }
 
 #typewriter::after {
@@ -527,6 +526,7 @@ h3 {
 @media (max-width: 768px) {
     #typewriter {
         font-size: clamp(1.2rem, 5vw, 2rem);
+        margin-bottom: clamp(1rem, 1.5vw, 1.5rem); /* Responsive margin */
     }
 }
 .create-property-btn {
