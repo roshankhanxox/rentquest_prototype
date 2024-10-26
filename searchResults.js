@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const propertyDiv = document.createElement('div');
             propertyDiv.classList.add('property');
     
-            let imageUrl = property.property_images[0]["image"];
+            let imageUrl = property.property_images && property.property_images.length > 0 ? property.property_images[0].image : '/placeholder.jpg';
             if (imageUrl.startsWith('image/upload/https://res.cloudinary.com/')) {
                 imageUrl = imageUrl.replace('image/upload/', '');
             } 
@@ -226,11 +226,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             propertyDiv.innerHTML = `
                 <a href="propertyDetails.html?id=${property.id}" class="property-link">
-                    <h3>${property.name}</h3>
-                    <img  src="${imageUrl}" alt="${property.name} image" />
-                    <p>Location: ${property.location}</p>
-                    <p>Price: ₹${property.price}</p>
-                    <p>Size: ${property.size} sqft</p>
+                    <h3>${property.name || 'Unnamed Property'}</h3>
+                    <img src="${imageUrl}" alt="${property.name || 'Property'} image" onerror="this.src='/placeholder.jpg';" />
+                    <p>Location: ${property.location || 'Location not specified'}</p>
+                    <p>Price: ₹${property.price || 'Price not specified'}</p>
+                    <p>Size: ${property.size || 'Size not specified'} sqft</p>
                 </a>
             `;
     
@@ -249,194 +249,35 @@ document.addEventListener('DOMContentLoaded', async function () {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            const data = await response.json();
-            console.log(data);
-            renderProperties(data);
-        } catch (error) {
-            console.error('Error fetching properties:', error);
-        }
-    }
-
-    // Event listener for search button
-    searchBtn.addEventListener('click', function () {
-        const query = searchInput.value.trim();
-        if (query) {
-            performSearch(query);
-        }
-    });
-
-    // Enter key triggers the search
-    searchInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const query = searchInput.value.trim();
-            if (query) {
-                performSearch(query);
-            }
-        }
-    });
-
-    // Filter button toggle
-    filterBtn.addEventListener('click', function() {
-        if (filtersContainer.style.display === 'none') {
-            filtersContainer.style.display = 'flex';
-            filtersContainer.style.opacity = '0';
-            filtersContainer.style.transform = 'translateY(-20px)';
-            setTimeout(() => {
-                filtersContainer.style.opacity = '1';
-                filtersContainer.style.transform = 'translateY(0)';
-            }, 10);
-        } else {
-            filtersContainer.style.opacity = '0';
-            filtersContainer.style.transform = 'translateY(-20px)';
-            setTimeout(() => {
-                filtersContainer.style.display = 'none';
-            }, 300);
-        }
-    });
-
-    // Price range slider
-    priceRange.addEventListener('input', function() {
-        priceValue.textContent = `₹${this.value}`;
-    });
-
-    priceRange.addEventListener('change', function() {
-        const query = searchInput.value.trim();
-        if (query) {
-            performSearch(query);
-        }
-    });
-
-    // Size range slider
-    sizeRange.addEventListener('input', function() {
-        sizeValue.textContent = `${this.value} sqft`;
-    });
-
-    sizeRange.addEventListener('change', function() {
-        const query = searchInput.value.trim();
-        if (query) {
-            performSearch(query);
-        }
-    });
-
-    // Get the search query from URL and perform search
-    const params = new URLSearchParams(window.location.search);
-    const queryFromURL = params.get('query');
-    if (queryFromURL) {
-        searchInput.value = queryFromURL;
-        performSearch(queryFromURL);
-    }
-});document.addEventListener('DOMContentLoaded', async function () {
-    const searchInput = document.querySelector('#searchBar');
-    const searchBtn = document.querySelector('#searchBtn');
-    const filterBtn = document.querySelector('#filterBtn');
-    const filtersContainer = document.querySelector('#filtersContainer');
-    const suggestionsContainer = document.getElementById('suggestions');
-    const propertiesContainer = document.getElementById('properties');
-    
-    // Sliders
-    const priceRange = document.getElementById('priceRange');
-    const priceValue = document.getElementById('priceValue');
-    const sizeRange = document.getElementById('sizeRange');
-    const sizeValue = document.getElementById('sizeValue');
-
-    const autocomplete = new google.maps.places.Autocomplete(searchInput, {
-        types: ['geocode'],
-        componentRestrictions: { country: 'in' }
-    });
-
-    autocomplete.addListener('place_changed', function() {
-        const place = autocomplete.getPlace();
-        if (place) {
-            const query = searchInput.value.trim();
-            if (query) {
-                performSearch(query);
-            }
-        }
-        console.log('Selected place:', place);
-    });
-
-    // Token Refresh Function
-    async function refreshToken() {
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (!refreshToken) {
-            console.log('No refresh token found.');
-            return;
-        }
-
-        try {
-            const response = await fetch('https://rentquest-production.up.railway.app/api/login/refresh/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ refresh: refreshToken })
-            });
-
             if (!response.ok) {
-                throw new Error('Failed to refresh token');
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-
             const data = await response.json();
-            localStorage.setItem('token', data.access);
-            console.log('Token refreshed successfully');
+            console.log('Fetched properties:', data);
+            renderProperties(data);
         } catch (error) {
-            console.error('Error refreshing token:', error);
+            console.error('Error fetching properties:', error);
+            propertiesContainer.innerHTML = '<p>Error fetching properties. Please try again later.</p>';
         }
     }
 
-    await refreshToken();
-
-    // Function to render search results
-    function renderProperties(properties) {
-        propertiesContainer.innerHTML = '';
-        if (properties.length === 0) {
-            propertiesContainer.innerHTML = '<p>No properties found.</p>';
-            return;
-        }
-    
-        properties.forEach(property => {
-            const propertyDiv = document.createElement('div');
-            propertyDiv.classList.add('property');
-    
-            let imageUrl = property.property_images[0]["image"];
-            if (imageUrl.startsWith('image/upload/https://res.cloudinary.com/')) {
-                imageUrl = imageUrl.replace('image/upload/', '');
-            } 
-            else if (imageUrl.startsWith('image/upload/')) {
-                imageUrl = `https://res.cloudinary.com/dl7n2c4hr/${imageUrl}`;
-            }
-
-            propertyDiv.innerHTML = `
-                <a href="propertyDetails.html?id=${property.id}" class="property-link">
-                    <h3>${property.name}</h3>
-                    <img  src="${imageUrl}" alt="${property.name} image" />
-                    <p>Location: ${property.location}</p>
-                    <p>Price: ₹${property.price}</p>
-                    <p>Size: ${property.size} sqft</p>
-                </a>
-            `;
-    
-            propertiesContainer.appendChild(propertyDiv);
-        });
-    }
-
-    // Function to perform the API call
-    async function performSearch(query) {
-        const maxPrice = priceRange.value;
-        const maxSize = sizeRange.value;
-
+    // Function to fetch all properties
+    async function fetchAllProperties() {
         try {
-            const response = await fetch(`https://rentquest-production.up.railway.app/api/properties/search/?query=${query}&max_price=${maxPrice}&max_size=${maxSize}`, {
+            const response = await fetch('https://rentquest-production.up.railway.app/api/properties/', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
-            console.log(data);
+            console.log('Fetched all properties:', data);
             renderProperties(data);
         } catch (error) {
-            console.error('Error fetching properties:', error);
+            console.error('Error fetching all properties:', error);
+            propertiesContainer.innerHTML = '<p>Error fetching properties. Please try again later.</p>';
         }
     }
 
@@ -445,6 +286,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const query = searchInput.value.trim();
         if (query) {
             performSearch(query);
+        } else {
+            fetchAllProperties();
         }
     });
 
@@ -455,16 +298,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             const query = searchInput.value.trim();
             if (query) {
                 performSearch(query);
+            } else {
+                fetchAllProperties();
             }
         }
     });
 
     // Filter button toggle
+    let filtersVisible = false;
+
     filterBtn.addEventListener('click', function() {
-        if (filtersContainer.style.display === 'none') {
+        filtersVisible = !filtersVisible;
+        if (filtersVisible) {
             filtersContainer.style.display = 'flex';
-            filtersContainer.style.opacity = '0';
-            filtersContainer.style.transform = 'translateY(-20px)';
             setTimeout(() => {
                 filtersContainer.style.opacity = '1';
                 filtersContainer.style.transform = 'translateY(0)';
@@ -487,6 +333,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const query = searchInput.value.trim();
         if (query) {
             performSearch(query);
+        } else {
+            fetchAllProperties();
         }
     });
 
@@ -499,6 +347,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const query = searchInput.value.trim();
         if (query) {
             performSearch(query);
+        } else {
+            fetchAllProperties();
         }
     });
 
@@ -508,5 +358,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (queryFromURL) {
         searchInput.value = queryFromURL;
         performSearch(queryFromURL);
+    } else {
+        fetchAllProperties();
     }
 });
