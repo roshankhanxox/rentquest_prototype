@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="searchResults.css">
 </head>
 <body>
+    <div class="background">
+        <div class="stars"></div>
+        <div class="aurora"></div>
+    </div>
     <header>
         <div class="logo">RentQuest</div>
         <nav>
@@ -24,12 +28,19 @@
             <div class="search-container">
                 <input type="text" id="searchBar" placeholder="Enter location" autocomplete="off">
                 <button id="searchBtn">Search</button>
+                <button id="filterBtn">Filters</button>
             </div>
-            <div class="filters">
-                <input type="number" id="minPrice" placeholder="Min Price">
-                <input type="number" id="maxPrice" placeholder="Max Price">
-                <input type="number" id="minSize" placeholder="Min Size (sqft)">
-                <input type="number" id="maxSize" placeholder="Max Size (sqft)">
+            <div class="filters" id="filtersContainer" style="display: none;">
+                <div class="slider-container">
+                    <label for="priceRange">Price Range:</label>
+                    <input type="range" id="priceRange" min="0" max="10000" step="100" value="5000">
+                    <span id="priceValue">₹5000</span>
+                </div>
+                <div class="slider-container">
+                    <label for="sizeRange">Size Range (sqft):</label>
+                    <input type="range" id="sizeRange" min="0" max="2000" step="50" value="1000">
+                    <span id="sizeValue">1000 sqft</span>
+                </div>
             </div>
             <div id="suggestions" class="suggestions"></div>
 
@@ -41,10 +52,5 @@
 
     <script src="searchResults.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzH2lWYVhWsTdC62rni0EQlrKDsWNS_YU&libraries=places"></script>
-
 </body>
-<div class="background">
-    <div class="stars"></div>
-    <div class="aurora"></div>
-</div>
 </html>
